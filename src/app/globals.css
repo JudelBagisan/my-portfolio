@@ -1,8 +1,163 @@
 @import "tailwindcss";
+@tailwind utilities;
+
+@layer utilities {
+  /* ==========================
+     CUSTOM FILTERS
+     ========================== */
+  .filter-blue {
+    filter: invert(41%) sepia(20%) saturate(6845%) hue-rotate(204deg) brightness(101%) contrast(101%);
+  }
+  .filter-red {
+    filter: invert(73%) sepia(48%) saturate(6386%) hue-rotate(318deg) brightness(96%) contrast(109%);
+  }
+  .filter-green {
+    filter: invert(65%) sepia(15%) saturate(1586%) hue-rotate(67deg) brightness(98%) contrast(88%);
+  }
+  .filter-yellow {
+    filter: invert(78%) sepia(87%) saturate(482%) hue-rotate(341deg) brightness(102%) contrast(100%);
+  }
+  .filter-grey {
+    filter: invert(59%) sepia(0%) saturate(251%) hue-rotate(205deg) brightness(98%) contrast(84%);
+  }
+  .filter-white {
+    filter: invert(100%) sepia(91%) saturate(38%) hue-rotate(254deg) brightness(110%) contrast(110%);
+  }
+  .filter-purple {
+    filter: invert(30%) sepia(57%) saturate(2723%) hue-rotate(246deg) brightness(95%) contrast(90%);
+  }
+
+  /* ==========================
+     CUSTOM BACKGROUND COLORS
+     ========================== */
+  .bg-accent-100 { background-color: #7700ff; }
+  .bg-accent-200 { background-color: #906bff; }
+  
+  .bg-muted-100 { background-color: #8F95A3; }
+  
+  .bg-customgrey-100 { background-color: #313546; }
+  .bg-customdarkgrey-100 { background-color: #232633; }
+  
+  .bg-offblack-100 { background-color: #44403B; }
+  .bg-offwhite-100 { background-color: #FAFAF9; }
+
+  /* ==========================
+     CUSTOM TEXT COLORS
+     ========================== */
+  .text-accent-100 { color: #7700ff; }
+  .text-accent-200 { color: #906bff; }
+  
+  .text-muted-100 { color: #8F95A3; }
+  
+  .text-customgrey-100 { color: #313546; }
+  .text-customdarkgrey-100 { color: #232633; }
+  
+  .text-offblack-100 { color: #44403B; }
+  .text-offwhite-100 { color: #FAFAF9; }
+
+  /* ==========================
+     ANIMATIONS
+     ========================== */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-fadeInUp {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  .animate-scaleIn {
+    animation: scaleIn 0.6s ease-out forwards;
+  }
+
+  .animate-slideInLeft {
+    animation: slideInLeft 0.8s ease-out forwards;
+  }
+
+  .animate-slideInRight {
+    animation: slideInRight 0.8s ease-out forwards;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+    opacity: 0;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+    opacity: 0;
+  }
+
+  .animation-delay-600 {
+    animation-delay: 0.6s;
+    opacity: 0;
+  }
+
+  .animation-delay-800 {
+    animation-delay: 0.8s;
+    opacity: 0;
+  }
+}
+
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --customdarkgrey: #232633;
+  --customgrey: #313546;
 }
 
 @theme inline {
@@ -20,7 +175,8 @@
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(to right, var(--customdarkgrey), var(--customgrey));
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+

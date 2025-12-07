@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// Import Poppins from Google Fonts
+import { Poppins } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// 1. Define and load the Poppins font
+const poppins = Poppins({
   subsets: ["latin"],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: "--font-poppins", // Define a new CSS variable for Poppins
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// Since you are replacing the Geist fonts, you can remove or comment out these imports
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
+
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,9 +32,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // Add the Poppins font variable to the <html> tag
+    <html lang="en" className={`${poppins.variable}`}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        // 2. Replace Geist variables with the Poppins variable
+        // 3. Add the Tailwind class for your gradient background
+        className={`font-poppins bg-gradient-to-l from-customdarkgrey-100 to-customgrey-100 antialiased`}
       >
         {children}
       </body>
