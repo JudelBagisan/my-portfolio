@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
+
+export const dynamic = 'force-dynamic';
 import toast, { Toaster } from 'react-hot-toast';
 import { deleteProject, toggleProjectVisibility } from '../actions';
 import EditProjectModal from '@/components/admin/EditProjectModal';

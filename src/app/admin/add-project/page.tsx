@@ -11,6 +11,8 @@ import { createProject, uploadImage } from '../actions';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 
+export const dynamic = 'force-dynamic';
+
 const projectSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   category: z.string().min(1, 'Category is required'),
