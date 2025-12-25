@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import React from 'react';
+import SocialLink from '@/components/SocialLink';
 
 interface Project {
   id: string;
@@ -286,12 +287,34 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
       <footer className="w-full bg-customdarkgrey-100 text-offwhite-100 py-12 mt-16">
         <div className="container mx-auto px-6 md:px-36">
           <div className="flex flex-col items-center text-center">
-            <div className="w-16 h-16 rounded-full bg-accent-100 flex items-center justify-center text-customdarkgrey-100 font-bold text-2xl mb-6">
+            {/* Logo/Icon */}
+            <div className="w-16 h-16 rounded-full bg-accent-100 flex items-center justify-center text-customdarkgrey-100 font-bold text-2xl mb-6 animate-scaleIn">
               JB
             </div>
+            
+            {/* Thank you message */}
             <p className="text-muted-100 mb-6">
-              <span className="font-semibold text-offwhite-100">Thanks for viewing,</span> let's create something amazing together.
+              <span className="font-semibold text-offwhite-100">Thanks for scrolling,</span> that's all folks.
             </p>
+
+            {/* Social Links */}
+            <div className="flex gap-6 text-muted-100">
+              <SocialLink href="https://www.facebook.com/judelcabahug.bagisan" label="Facebook">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22 12.072C22 6.507 17.523 2 12 2S2 6.507 2 12.072c0 5.025 3.657 9.188 8.438 9.93v-7.03H7.898v-2.9h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.9h-2.33v7.03C18.343 21.26 22 17.096 22 12.072z"/>
+                </svg>
+              </SocialLink>
+              <SocialLink href="https://github.com/JudelBagisan" label="GitHub">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 .297a12 12 0 00-3.794 23.4c.6.111.82-.261.82-.58 0-.289-.01-1.047-.016-2.054-3.338.724-4.042-1.583-4.042-1.583-.546-1.389-1.333-1.761-1.333-1.761-1.09-.745.083-.73.083-.73 1.205.084 1.84 1.237 1.84 1.237 1.07 1.832 2.809 1.303 3.492.997.108-.776.418-1.303.76-1.603-2.665-.304-5.466-1.334-5.466-5.932 0-1.31.468-2.382 1.236-3.222-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 016.003 0c2.292-1.552 3.298-1.23 3.298-1.23.654 1.653.242 2.874.118 3.176.77.84 1.235 1.912 1.235 3.222 0 4.61-2.804 5.625-5.476 5.921.43.371.813 1.102.813 2.222 0 1.604-.015 2.898-.015 3.293 0 .322.216.695.825.577A12.006 12.006 0 0012 .297"/>
+                </svg>
+              </SocialLink>
+              <SocialLink href="https://www.linkedin.com/in/judel-bagisan-88279334b/" label="LinkedIn">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20.451 20.451h-3.554v-5.569c0-1.328-.026-3.037-1.852-3.037-1.852 0-2.135 1.446-2.135 2.941v5.665H9.357V9.5h3.413v1.503h.049c.476-.9 1.637-1.852 3.372-1.852 3.604 0 4.27 2.372 4.27 5.456v6.294zM5.337 8.001a2.062 2.062 0 11.001-4.124 2.062 2.062 0 01-.001 4.124zM7.112 20.451H3.56V9.5h3.552v10.951zM22.225 0H1.771C.792 0 0 .774 0 1.73v20.54C0 23.226.792 24 1.771 24h20.451C23.2 24 24 23.226 24 22.27V1.73C24 .774 23.2 0 22.225 0z"/>
+                </svg>
+              </SocialLink>
+            </div>
           </div>
         </div>
       </footer>
