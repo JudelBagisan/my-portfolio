@@ -199,11 +199,11 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
       {/* Project Modal */}
       {selectedProject && (
         <div
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fadeIn"
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fadeIn overflow-y-auto"
           onClick={() => setSelectedProject(null)}
         >
           <div
-            className="bg-customgrey-100 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-scaleIn"
+            className="bg-customgrey-100 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden animate-scaleIn my-auto flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
@@ -218,20 +218,22 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
             </button>
 
             {/* Large Image */}
-            <div className="relative w-full h-96 md:h-[500px]">
+            <div className="relative w-full bg-customdarkgrey-100 flex items-center justify-center">
               <Image
                 src={selectedProject.image_url}
                 alt={selectedProject.title}
-                fill
-                className="object-cover rounded-t-lg"
+                width={1200}
+                height={800}
+                className="object-contain w-full h-auto"
+                style={{ maxHeight: '70vh', width: 'auto', height: 'auto' }}
               />
             </div>
 
             {/* Project Details */}
-            <div className="p-8">
-              <div className="flex justify-between items-start mb-4">
-                <h2 className="text-3xl md:text-4xl font-bold text-offwhite-100">{selectedProject.title}</h2>
-                <span className="text-sm text-muted-100 px-4 py-2 bg-customdarkgrey-100 rounded-full">
+            <div className="p-4 md:p-8 overflow-y-auto flex-1">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-offwhite-100">{selectedProject.title}</h2>
+                <span className="text-xs sm:text-sm text-muted-100 px-3 sm:px-4 py-1 sm:py-2 bg-customdarkgrey-100 rounded-full whitespace-nowrap self-start">
                   {selectedProject.category}
                 </span>
               </div>
@@ -248,7 +250,7 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
                 ))}
               </div>
 
-              <p className="text-muted-100 text-lg leading-relaxed mb-8">
+              <p className="text-muted-100 text-base md:text-lg leading-relaxed mb-6 md:mb-8">
                 {selectedProject.description}
               </p>
 
@@ -270,11 +272,11 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
                 </div>
               </div>
 
-              <div className="mt-6 flex gap-4">
-                <button className="px-6 py-3 bg-accent-100 text-offwhite-100 rounded-lg hover:bg-accent-200 transition-colors font-medium">
+              <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <button className="px-4 sm:px-6 py-2 sm:py-3 bg-accent-100 text-offwhite-100 rounded-lg hover:bg-accent-200 transition-colors font-medium text-sm sm:text-base">
                   View Live Project
                 </button>
-                <button className="px-6 py-3 bg-customdarkgrey-100 text-offwhite-100 rounded-lg hover:bg-customdarkgrey-100/80 transition-colors font-medium">
+                <button className="px-4 sm:px-6 py-2 sm:py-3 bg-customdarkgrey-100 text-offwhite-100 rounded-lg hover:bg-customdarkgrey-100/80 transition-colors font-medium text-sm sm:text-base">
                   View Case Study
                 </button>
               </div>
