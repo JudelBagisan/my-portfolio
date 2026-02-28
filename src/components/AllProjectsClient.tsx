@@ -51,16 +51,16 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
   }, {} as Record<string, Project[]>);
 
   return (
-    <div className="bg-linear-to-l from-customgrey-100 to-customdarkgrey-100 text-offwhite-100 font-sans min-h-screen">
+    <div className="bg-gradient-to-l from-customgrey-100 to-customdarkgrey-100 text-offwhite-100 font-sans min-h-screen overflow-x-hidden">
       {/* Header */}
-      <header className="w-full px-6 md:px-36 py-6 flex items-center justify-between">
-        <Link href="/" className="ml-6">
-          <div className="w-10 h-10 rounded-full bg-accent-100 flex items-center justify-center text-customdarkgrey-100 font-semibold hover:scale-110 transition-transform">
+      <header className="w-full px-4 sm:px-6 md:px-20 lg:px-36 py-4 md:py-6 flex items-center justify-between">
+        <Link href="/" className="ml-2 sm:ml-6">
+          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-accent-100 flex items-center justify-center text-customdarkgrey-100 font-semibold hover:scale-110 transition-transform text-sm md:text-base">
             JB
           </div>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8 md:text-lg text-sm text-muted-100 mr-6">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm lg:text-lg text-muted-100 mr-2 sm:mr-6">
           <Link href="/" className="hover:text-offwhite-100 transition-all hover:scale-105">
             Home
           </Link>
@@ -72,22 +72,22 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
       </header>
 
       {/* Hero Section */}
-      <section className="w-full px-6 md:px-36 py-16">
+      <section className="w-full px-4 sm:px-6 md:px-20 lg:px-36 py-12 md:py-16">
         <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-extrabold mb-4">All Projects</h1>
-            <p className="text-muted-100 text-lg max-w-2xl mx-auto">
+          <div className="text-center mb-8 md:mb-12">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-3 md:mb-4">All Projects</h1>
+            <p className="text-sm md:text-base lg:text-lg text-muted-100 max-w-2xl mx-auto px-4">
               Explore my complete portfolio of creative works across various categories.
             </p>
           </div>
 
           {/* Filter Buttons */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8 md:mb-12">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedFilter(category)}
-                className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                className={`px-4 md:px-6 py-2 md:py-3 rounded-lg font-medium transition-all text-sm md:text-base ${
                   selectedFilter === category
                     ? 'bg-accent-100 text-offwhite-100'
                     : 'bg-customgrey-100 text-muted-100 hover:bg-customgrey-100/80 hover:text-offwhite-100'
@@ -101,31 +101,31 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
           {/* Projects Display */}
           {selectedFilter === 'All' ? (
             // Show projects grouped by category
-            <div className="space-y-16">
+            <div className="space-y-12 md:space-y-16">
               {Object.entries(projectsByCategory).map(([category, categoryProjects]) => (
                 categoryProjects.length > 0 && (
                   <div key={category}>
                     {/* Category Header with Divider */}
-                    <div className="flex items-center gap-4 mb-8">
-                      <h2 className="text-3xl font-bold text-offwhite-100">{category}</h2>
-                      <div className="flex-1 h-px bg-linear-to-r from-accent-100 to-transparent"></div>
+                    <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
+                      <h2 className="text-2xl sm:text-3xl font-bold text-offwhite-100">{category}</h2>
+                      <div className="flex-1 h-px bg-gradient-to-r from-accent-100 to-transparent"></div>
                     </div>
 
                     {/* Projects Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
                       {categoryProjects.map((project) => (
                         <div
                           key={project.id}
                           onClick={() => setSelectedProject(project)}
-                          className="bg-customgrey-100 rounded-lg p-6 hover:bg-customgrey-100/80 transition-all group cursor-pointer hover:scale-105 transform duration-300"
+                          className="bg-customgrey-100 rounded-lg p-4 md:p-6 hover:bg-customgrey-100/80 transition-all group cursor-pointer hover:scale-105 transform duration-300"
                         >
-                          <div className="flex justify-between items-start mb-4">
-                            <h3 className="text-xl font-bold">{project.title}</h3>
-                            <span className="text-xs text-muted-100 px-3 py-1 bg-customdarkgrey-100 rounded-full">
+                          <div className="flex justify-between items-start mb-3 md:mb-4 gap-2">
+                            <h3 className="text-base sm:text-lg md:text-xl font-bold">{project.title}</h3>
+                            <span className="text-xs text-muted-100 px-2 md:px-3 py-1 bg-customdarkgrey-100 rounded-full whitespace-nowrap">
                               {project.year}
                             </span>
                           </div>
-                          <div className="rounded-lg h-48 overflow-hidden relative mb-4">
+                          <div className="rounded-lg h-40 sm:h-48 overflow-hidden relative mb-3 md:mb-4">
                             <Image
                               src={project.image_url}
                               alt={project.title}
@@ -143,7 +143,7 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
                               </span>
                             ))}
                           </div>
-                          <p className="text-sm text-muted-100 line-clamp-2">
+                          <p className="text-xs md:text-sm text-muted-100 line-clamp-2">
                             {project.description}
                           </p>
                         </div>
@@ -155,20 +155,20 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
             </div>
           ) : (
             // Show filtered projects
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
               {filteredProjects.map((project) => (
                 <div
                   key={project.id}
                   onClick={() => setSelectedProject(project)}
-                  className="bg-customgrey-100 rounded-lg p-6 hover:bg-customgrey-100/80 transition-all group cursor-pointer hover:scale-105 transform duration-300"
+                  className="bg-customgrey-100 rounded-lg p-4 md:p-6 hover:bg-customgrey-100/80 transition-all group cursor-pointer hover:scale-105 transform duration-300"
                 >
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-xl font-bold">{project.title}</h3>
-                    <span className="text-xs text-muted-100 px-3 py-1 bg-customdarkgrey-100 rounded-full">
+                  <div className="flex justify-between items-start mb-3 md:mb-4 gap-2">
+                    <h3 className="text-base sm:text-lg md:text-xl font-bold">{project.title}</h3>
+                    <span className="text-xs text-muted-100 px-2 md:px-3 py-1 bg-customdarkgrey-100 rounded-full whitespace-nowrap">
                       {project.year}
                     </span>
                   </div>
-                  <div className="rounded-lg h-48 overflow-hidden relative mb-4">
+                  <div className="rounded-lg h-40 sm:h-48 overflow-hidden relative mb-3 md:mb-4">
                     <Image
                       src={project.image_url}
                       alt={project.title}
@@ -186,7 +186,7 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
                       </span>
                     ))}
                   </div>
-                  <p className="text-sm text-muted-100 line-clamp-2">
+                  <p className="text-xs md:text-sm text-muted-100 line-clamp-2">
                     {project.description}
                   </p>
                 </div>
@@ -199,20 +199,20 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
       {/* Project Modal */}
       {selectedProject && (
         <div
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fadeIn overflow-y-auto"
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-2 sm:p-4 animate-fadeIn overflow-y-auto"
           onClick={() => setSelectedProject(null)}
         >
           <div
-            className="bg-customgrey-100 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden animate-scaleIn my-auto flex flex-col"
+            className="bg-customgrey-100 rounded-lg max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden animate-scaleIn my-auto flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button
               onClick={() => setSelectedProject(null)}
-              className="absolute top-4 right-4 w-10 h-10 bg-customdarkgrey-100 rounded-full flex items-center justify-center text-offwhite-100 hover:bg-accent-100 transition-colors z-10"
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 bg-customdarkgrey-100 rounded-full flex items-center justify-center text-offwhite-100 hover:bg-accent-100 transition-colors z-10"
               aria-label="Close modal"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -225,7 +225,7 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
                 width={1200}
                 height={800}
                 className="object-contain w-full h-auto"
-                style={{ maxHeight: '70vh', width: 'auto', height: 'auto' }}
+                style={{ maxHeight: '60vh', width: 'auto', height: 'auto' }}
               />
             </div>
 

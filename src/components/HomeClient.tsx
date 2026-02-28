@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import React from 'react';
 import SocialLink from '@/components/SocialLink';
 import Image from 'next/image';
+import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from 'framer-motion';
 
 interface Project {
   id: string;
@@ -33,17 +34,26 @@ export default function HomeClient({ projects, projectCounts }: HomeClientProps)
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   return (
-    <div className="bg-gradient-to-l from-customgrey-100 to-customdarkgrey-100 text-offwhite-100 font-sans min-h-screen">
+    <div className="bg-customdarkgrey-100 text-offwhite-100 font-sans min-h-screen relative overflow-x-hidden">
       {/* Header */}
-      <header className="w-full px-6 md:px-36 py-6 flex items-center justify-between animate-fadeIn">
-        <div className="ml-6">
-          <div className="w-10 h-10 rounded-full bg-accent-100 flex items-center justify-center text-customdarkgrey-100 font-semibold hover:scale-110 transition-transform">
+      <motion.header 
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="w-full px-4 sm:px-6 md:px-20 lg:px-36 py-4 md:py-6 flex items-center justify-between"
+      >
+        <motion.div 
+          className="ml-2 sm:ml-6"
+          whileHover={{ scale: 1.1, rotate: 360 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-accent-100 flex items-center justify-center text-customdarkgrey-100 font-semibold text-sm md:text-base cursor-pointer">
             JB
           </div>
-        </div>
+        </motion.div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8 md:text-lg text-sm text-muted-100 mr-6">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm lg:text-lg text-muted-100 mr-2 sm:mr-6">
           <Link href="#services" className="flex items-center gap-2 text-offwhite-100 font-medium hover:scale-105 transition-transform">
             Services
             <span className="w-2 h-2 bg-accent-100 rounded-full inline-block mt-1 ml-1"></span>
@@ -57,9 +67,10 @@ export default function HomeClient({ projects, projectCounts }: HomeClientProps)
         </nav>
 
         {/* Mobile Menu Button */}
-        <button
+        <motion.button
+          whileTap={{ scale: 0.9 }}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden mr-6 p-2 rounded-md bg-customgrey-100/30"
+          className="md:hidden mr-2 sm:mr-6 p-2 rounded-md bg-customgrey-100/30 hover:bg-customgrey-100/50 transition-colors"
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileMenuOpen}
         >
@@ -74,34 +85,67 @@ export default function HomeClient({ projects, projectCounts }: HomeClientProps)
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
+              d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
             />
           </svg>
-        </button>
-      </header>
+        </motion.button>
+      </motion.header>
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <nav className="md:hidden bg-customdarkgrey-100 px-6 pb-4 animate-fadeInUp overflow-y-auto max-h-[60vh] smooth-scroll">
+        <motion.nav 
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.3 }}
+          className="md:hidden bg-customdarkgrey-100 px-4 sm:px-6 pb-4 overflow-hidden"
+        >
           <div className="flex flex-col gap-3 text-offwhite-100">
-            <Link href="#services" onClick={() => setMobileMenuOpen(false)} className="py-2 hover:text-accent-100 transition-colors">Services</Link>
-            <Link href="/allprojects" onClick={() => setMobileMenuOpen(false)} className="py-2 hover:text-accent-100 transition-colors">Works</Link>
-            <Link href="#portfolio" onClick={() => setMobileMenuOpen(false)} className="py-2 hover:text-accent-100 transition-colors">Portfolio</Link>
+            <motion.div whileHover={{ x: 10 }} transition={{ type: "spring", stiffness: 300 }}>
+              <Link href="#services" onClick={() => setMobileMenuOpen(false)} className="py-2 block hover:text-accent-100 transition-colors">
+                Services
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ x: 10 }} transition={{ type: "spring", stiffness: 300 }}>
+              <Link href="/allprojects" onClick={() => setMobileMenuOpen(false)} className="py-2 block hover:text-accent-100 transition-colors">
+                Works
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ x: 10 }} transition={{ type: "spring", stiffness: 300 }}>
+              <Link href="#portfolio" onClick={() => setMobileMenuOpen(false)} className="py-2 block hover:text-accent-100 transition-colors">
+                Portfolio
+              </Link>
+            </motion.div>
           </div>
-        </nav>
+        </motion.nav>
       )}
 
       {/* Hero Section */}
-      <main className="w-full h-auto md:h-[88vh] px-6 md:px-36 flex items-center">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 items-start md:items-center">
+      <main className="w-full min-h-[60vh] md:h-[88vh] px-4 sm:px-6 md:px-20 lg:px-36 py-8 md:py-0 flex items-center">
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start md:items-center">
           {/* Left: Name & Social */}
-          <div className="col-span-12 md:col-span-5 animate-slideInLeft">
-            <div className="text-5xl md:text-8xl font-extrabold leading-tight text-center md:text-left">
-              <div>Judel</div>
-              <div>Bagisan</div>
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="col-span-12 md:col-span-5"
+          >
+            <div className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold leading-tight text-center md:text-left">
+              <AnimatedText text="Judel" delay={0.5} />
+              <AnimatedText text="Bagisan" delay={0.8} />
             </div>
-            <div className="mx-auto md:mx-0 w-20 md:w-12 h-1 bg-accent-100 mt-6 mb-6"></div>
-            <div className="flex gap-3 text-muted-100 justify-center md:justify-start items-center">
+            <motion.div 
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 1.3 }}
+              className="mx-auto md:mx-0 w-16 sm:w-20 md:w-12 h-1 bg-accent-100 mt-4 md:mt-6 mb-4 md:mb-6 origin-left"
+            />
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.5 }}
+              className="flex gap-3 text-muted-100 justify-center md:justify-start items-center"
+            >
               <SocialLink href="https://www.facebook.com/judelcabahug.bagisan" label="Facebook">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path d="M22 12.072C22 6.507 17.523 2 12 2S2 6.507 2 12.072c0 5.025 3.657 9.188 8.438 9.93v-7.03H7.898v-2.9h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.9h-2.33v7.03C18.343 21.26 22 17.096 22 12.072z"/>
@@ -117,68 +161,95 @@ export default function HomeClient({ projects, projectCounts }: HomeClientProps)
                   <path d="M20.451 20.451h-3.554v-5.569c0-1.328-.026-3.037-1.852-3.037-1.852 0-2.135 1.446-2.135 2.941v5.665H9.357V9.5h3.413v1.503h.049c.476-.9 1.637-1.852 3.372-1.852 3.604 0 4.27 2.372 4.27 5.456v6.294zM5.337 8.001a2.062 2.062 0 11.001-4.124 2.062 2.062 0 01-.001 4.124zM7.112 20.451H3.56V9.5h3.552v10.951zM22.225 0H1.771C.792 0 0 .774 0 1.73v20.54C0 23.226.792 24 1.771 24h20.451C23.2 24 24 23.226 24 22.27V1.73C24 .774 23.2 0 22.225 0z"/>
                 </svg>
               </SocialLink>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Middle: Hero Image */}
-          <div className="col-span-12 md:col-span-3 flex justify-center relative md:-ml-8 animate-scaleIn animation-delay-200">
-            <div className="w-40 sm:w-56 md:w-64 h-80 md:h-[520px] bg-gradient-to-b from-white/5 to-black/50 rounded-[40px] shadow-2xl border-4 border-gray-800 hover:scale-105 transition-transform duration-500"></div>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="col-span-12 md:col-span-3 flex justify-center relative md:-ml-8"
+          >
+            <motion.div 
+              whileHover={{ scale: 1.05, rotateY: 10 }}
+              transition={{ duration: 0.5 }}
+              className="w-40 sm:w-56 md:w-64 h-80 sm:h-96 md:h-[520px] bg-gradient-to-b from-white/5 to-black/50 rounded-[40px] shadow-2xl border-4 border-gray-800 cursor-pointer relative overflow-hidden"
+            >
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-accent-100/20 to-transparent"
+                animate={{
+                  opacity: [0.2, 0.4, 0.2],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+            </motion.div>
+          </motion.div>
 
           {/* Right: Intro & CTA */}
-          <div className="col-span-12 md:col-span-4 pr-0 md:pr-8 text-center md:text-left animate-slideInRight animation-delay-400">
-            <div className="text-sm text-muted-100 uppercase tracking-widest mb-3">— Introduction</div>
-            <h2 className="text-xl md:text-3xl font-semibold mb-5 text-offwhite-100 text-justify">
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="col-span-12 md:col-span-4 pr-0 md:pr-8 text-center md:text-left"
+          >
+            <div className="text-xs sm:text-sm text-muted-100 uppercase tracking-widest mb-3">— Introduction</div>
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-4 md:mb-5 text-offwhite-100 text-justify">
               Graphic Designer & Layout Artist, based in the Philippines.
             </h2>
             <p className="text-sm md:text-base text-muted-100 mb-6 text-justify">
               I specialize in crafting distinct visual identities, from text-based logos to hyper-realistic image manipulations. I blend technical precision with creative flair to transform abstract concepts into compelling digital realities.
             </p>
-            <Link
-              href="#"
-              className="text-accent-100 hover:text-accent-200 md:mb-0 mb-10 inline-flex items-center gap-3 font-medium transition-all hover:translate-x-2"
-            >
-              My story <span>→</span>
-            </Link>
-          </div>
+            <motion.div whileHover={{ x: 10 }} transition={{ type: "spring", stiffness: 300 }}>
+              <Link
+                href="#"
+                className="text-accent-100 hover:text-accent-200 inline-flex items-center gap-3 font-medium transition-all text-sm md:text-base"
+              >
+                My story <span>→</span>
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </main>
 
       {/* Services Section */}
       <section className="w-full bg-customdarkgrey-100 text-offwhite-100" id='services'>
-        <div className="container mx-auto px-6 md:px-36 py-16">
+        <div className="container mx-auto px-4 sm:px-6 md:px-20 lg:px-36 py-12 md:py-16">
           {/* CTA and Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12">
-            <div className="animate-fadeInUp">
-              <div className="text-sm text-muted-100 uppercase tracking-widest mb-3">— Services</div>
-              <h3 className="text-2xl md:text-3xl font-semibold mb-3">Any Type Of Query & Discussion.</h3>
-              <p className="text-muted-100 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center mb-8 md:mb-12">
+            <ScrollReveal>
+              <div className="text-xs sm:text-sm text-muted-100 uppercase tracking-widest mb-3">— Services</div>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-3">Any Type Of Query & Discussion.</h3>
+              <p className="text-sm md:text-base text-muted-100 mb-4">
                 Reach out for projects, collaborations, or fresh design ideas.
               </p>
-              
-            </div>
+            </ScrollReveal>
 
-            <div className="md:text-right animate-fadeInUp animation-delay-200">
-              <p className="text-muted-100 mb-4">
+            <ScrollReveal delay={0.2}>
+              <p className="text-sm md:text-base text-muted-100 mb-4 md:text-right">
                 Turning ideas into designs that inspire, engage, and deliver results.
               </p>
-              <div className="flex gap-8 justify-start md:justify-end items-center">
-                <div className="text-accent-100 text-3xl font-extrabold">4</div>
+              <div className="flex flex-wrap gap-4 md:gap-8 justify-start md:justify-end items-center">
+                <div className="text-accent-100 text-2xl md:text-3xl font-extrabold">4</div>
                 <div>
-                  <div className="text-muted-100 text-sm">Years of</div>
-                  <div className="text-muted-100 text-sm">Experience.</div>
+                  <div className="text-muted-100 text-xs md:text-sm">Years of</div>
+                  <div className="text-muted-100 text-xs md:text-sm">Experience.</div>
                 </div>
-                <div className="ml-6 text-accent-100 text-3xl font-extrabold">100+</div>
+                <div className="ml-2 md:ml-6 text-accent-100 text-2xl md:text-3xl font-extrabold">100+</div>
                 <div>
-                  <div className="text-muted-100 text-sm">Satisfied</div>
-                  <div className="text-muted-100 text-sm">Clients.</div>
+                  <div className="text-muted-100 text-xs md:text-sm">Satisfied</div>
+                  <div className="text-muted-100 text-xs md:text-sm">Clients.</div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
 
           {/* Service Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-stretch mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-stretch mb-8 md:mb-12">
             <ServiceCard
                 title="UI/UX & Product Design"
                 projects={projectCounts.design}
@@ -198,102 +269,52 @@ export default function HomeClient({ projects, projectCounts }: HomeClientProps)
                 icon="▣"
                 category="Shirts"
             />
-            </div>
+          </div>
         </div>
       </section>
 
       {/* Portfolio Section */}
-      <section className="w-full bg-customdarkgrey-100 text-offwhite-100 py-16" id='portfolio'>
-        <div className="container mx-auto px-6 md:px-36">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <section className="w-full bg-customdarkgrey-100 text-offwhite-100 py-12 md:py-16" id='portfolio'>
+        <div className="container mx-auto px-4 sm:px-6 md:px-20 lg:px-36">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {/* Left: Portfolio Intro */}
-            <div className="flex flex-col justify-start animate-fadeInUp">
-              <div className="text-sm text-muted-100 uppercase tracking-widest mb-4">— Portfolio</div>
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">
-                All Creative Works,<br />
-                Selected projects.
-              </h2>
-              <p className="text-muted-100 mb-8 max-w-md">
-                Showcasing a collection of designs and projects that highlight creativity, craftsmanship, and practical problem-solving across various mediums.
-              </p>
-              <Link
-                href="/allprojects"
-                className="text-accent-100 hover:text-accent-200 inline-flex items-center gap-3 font-medium transition-all hover:translate-x-2"
-              >
-                Explore more <span>→</span>
-              </Link>
-            </div>
+            <ScrollReveal>
+              <div className="flex flex-col justify-start">
+                <div className="text-xs sm:text-sm text-muted-100 uppercase tracking-widest mb-4">— Portfolio</div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
+                  All Creative Works,<br />
+                  Selected projects.
+                </h2>
+                <p className="text-sm md:text-base text-muted-100 mb-6 md:mb-8 max-w-md">
+                  Showcasing a collection of designs and projects that highlight creativity, craftsmanship, and practical problem-solving across various mediums.
+                </p>
+                <motion.div whileHover={{ x: 10 }} transition={{ type: "spring", stiffness: 300 }}>
+                  <Link
+                    href="/allprojects"
+                    className="text-accent-100 hover:text-accent-200 inline-flex items-center gap-3 font-medium transition-all text-sm md:text-base"
+                  >
+                    Explore more <span>→</span>
+                  </Link>
+                </motion.div>
+              </div>
+            </ScrollReveal>
 
             {/* Right: First Project */}
             {projects.length > 0 && (
-              <div 
-                onClick={() => setSelectedProject(projects[0])}
-                className="bg-customgrey-100 rounded-lg p-6 hover:bg-customgrey-100/80 transition-all group cursor-pointer animate-fadeInUp animation-delay-200 hover:scale-105 transform duration-300"
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-2xl font-bold">{projects[0].title}</h3>
-                  <span className="text-xs text-muted-100 px-3 py-1 bg-customdarkgrey-100 rounded-full">
-                    {projects[0].tags.join(', ')}
-                  </span>
-                </div>
-                <div className="rounded-lg h-64 overflow-hidden relative">
-                  <Image 
-                    src={projects[0].image_url}
-                    alt={projects[0].title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-              </div>
+              <ProjectCard project={projects[0]} onClick={() => setSelectedProject(projects[0])} delay={0.2} />
             )}
           </div>
 
           {/* Bottom Row: Two Projects */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6 md:mt-8">
             {/* Second Project */}
             {projects.length > 1 && (
-              <div 
-                onClick={() => setSelectedProject(projects[1])}
-                className="bg-customgrey-100 rounded-lg p-6 hover:bg-customgrey-100/80 transition-all group cursor-pointer animate-fadeInUp animation-delay-400 hover:scale-105 transform duration-300"
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-2xl font-bold">{projects[1].title}</h3>
-                  <span className="text-xs text-muted-100 px-3 py-1 bg-customdarkgrey-100 rounded-full">
-                    {projects[1].tags.join(', ')}
-                  </span>
-                </div>
-                <div className="rounded-lg h-64 overflow-hidden relative">
-                  <Image 
-                    src={projects[1].image_url}
-                    alt={projects[1].title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-              </div>
+              <ProjectCard project={projects[1]} onClick={() => setSelectedProject(projects[1])} delay={0.3} />
             )}
 
             {/* Third Project */}
             {projects.length > 2 && (
-              <div 
-                onClick={() => setSelectedProject(projects[2])}
-                className="bg-customgrey-100 rounded-lg p-6 hover:bg-customgrey-100/80 transition-all group cursor-pointer animate-fadeInUp animation-delay-600 hover:scale-105 transform duration-300"
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-2xl font-bold">{projects[2].title}</h3>
-                  <span className="text-xs text-muted-100 px-3 py-1 bg-customdarkgrey-100 rounded-full">
-                    {projects[2].tags.join(', ')}
-                  </span>
-                </div>
-                <div className="rounded-lg h-64 overflow-hidden relative">
-                  <Image 
-                    src={projects[2].image_url}
-                    alt={projects[2].title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-              </div>
+              <ProjectCard project={projects[2]} onClick={() => setSelectedProject(projects[2])} delay={0.4} />
             )}
           </div>
         </div>
@@ -376,94 +397,113 @@ export default function HomeClient({ projects, projectCounts }: HomeClientProps)
       )}
 
       {/* Contact Section */}
-      <section className="w-full bg-customgrey-100 text-offwhite-100 py-20">
-        <div className="container mx-auto px-6 md:px-36">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+      <section className="w-full bg-customgrey-100 text-offwhite-100 py-12 md:py-20">
+        <div className="container mx-auto px-4 sm:px-6 md:px-20 lg:px-36">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
             {/* Left: Got a project */}
-            <div className="animate-fadeInUp">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <ScrollReveal>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6">
                 Got a project?<br />
                 Let's talk.
               </h2>
-              <p className="text-muted-100 mb-4">
+              <p className="text-sm md:text-base text-muted-100 mb-4 md:mb-6">
                 Feel free to reach out for project inquiries, collaborations, or design discussions. I am open to new opportunities and always ready to connect.
               </p>
 
-              <Link
-                href="mailto:judelcabahugbagisan@gmail.com"
-                className="text-accent-100 hover:text-accent-200 inline-flex items-center gap-3 font-medium transition-all text-xl group"
-              >
-                Send an email
-                <span className="group-hover:translate-x-2 transition-transform">→</span>
-              </Link>
-            </div>
+              <motion.div whileHover={{ x: 10 }} transition={{ type: "spring", stiffness: 300 }}>
+                <Link
+                  href="mailto:judelcabahugbagisan@gmail.com"
+                  className="text-accent-100 hover:text-accent-200 inline-flex items-center gap-3 font-medium transition-all text-lg md:text-xl group"
+                >
+                  Send an email
+                  <span className="group-hover:translate-x-2 transition-transform">→</span>
+                </Link>
+              </motion.div>
+            </ScrollReveal>
 
             {/* Right: Portfolio Stats & Info */}
-            <div className="animate-fadeInUp animation-delay-200">
-              <h3 className="text-2xl md:text-3xl font-bold mb-8">
+            <ScrollReveal delay={0.2}>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6 md:mb-8">
                 Why work with me?
               </h3>
               
               {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-6 mb-8">
-                <div className="bg-customgrey-100 p-6 rounded-lg hover:bg-customgrey-100/80 transition-all">
-                  <div className="text-accent-100 text-4xl font-extrabold mb-2">4</div>
-                  <div className="text-muted-100 text-sm">Years of Experience</div>
-                </div>
-                <div className="bg-customgrey-100 p-6 rounded-lg hover:bg-customgrey-100/80 transition-all">
-                  <div className="text-accent-100 text-4xl font-extrabold mb-2">100+</div>
-                  <div className="text-muted-100 text-sm">Satisfied Clients</div>
-                </div>
-                <div className="bg-customgrey-100 p-6 rounded-lg hover:bg-customgrey-100/80 transition-all">
-                  <div className="text-accent-100 text-4xl font-extrabold mb-2">{projectCounts.totalProjects}</div>
-                  <div className="text-muted-100 text-sm">Projects Completed</div>
-                </div>
-                <div className="bg-customgrey-100 p-6 rounded-lg hover:bg-customgrey-100/80 transition-all">
-                  <div className="text-accent-100 text-4xl font-extrabold mb-2">98%</div>
-                  <div className="text-muted-100 text-sm">Client Satisfaction</div>
-                </div>
+              <div className="grid grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-customdarkgrey-100/50 p-4 md:p-6 rounded-lg hover:bg-customdarkgrey-100/70 transition-all"
+                >
+                  <div className="text-accent-100 text-3xl md:text-4xl font-extrabold mb-2">4</div>
+                  <div className="text-muted-100 text-xs md:text-sm">Years of Experience</div>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-customdarkgrey-100/50 p-4 md:p-6 rounded-lg hover:bg-customdarkgrey-100/70 transition-all"
+                >
+                  <div className="text-accent-100 text-3xl md:text-4xl font-extrabold mb-2">100+</div>
+                  <div className="text-muted-100 text-xs md:text-sm">Satisfied Clients</div>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-customdarkgrey-100/50 p-4 md:p-6 rounded-lg hover:bg-customdarkgrey-100/70 transition-all"
+                >
+                  <div className="text-accent-100 text-3xl md:text-4xl font-extrabold mb-2">{projectCounts.totalProjects}</div>
+                  <div className="text-muted-100 text-xs md:text-sm">Projects Completed</div>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-customdarkgrey-100/50 p-4 md:p-6 rounded-lg hover:bg-customdarkgrey-100/70 transition-all"
+                >
+                  <div className="text-accent-100 text-3xl md:text-4xl font-extrabold mb-2">98%</div>
+                  <div className="text-muted-100 text-xs md:text-sm">Client Satisfaction</div>
+                </motion.div>
               </div>
 
               {/* Services List */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 text-offwhite-100">
-                  <div className="w-2 h-2 bg-accent-100 rounded-full"></div>
-                  <span>Brand Identity Design</span>
-                </div>
-                <div className="flex items-center gap-3 text-offwhite-100">
-                  <div className="w-2 h-2 bg-accent-100 rounded-full"></div>
-                  <span>Logo & Visual Design</span>
-                </div>
-                <div className="flex items-center gap-3 text-offwhite-100">
-                  <div className="w-2 h-2 bg-accent-100 rounded-full"></div>
-                  <span>Image Manipulation & Editing</span>
-                </div>
-                <div className="flex items-center gap-3 text-offwhite-100">
-                  <div className="w-2 h-2 bg-accent-100 rounded-full"></div>
-                  <span>Layout & Typography</span>
-                </div>
+              <div className="space-y-2 md:space-y-3">
+                {['Brand Identity Design', 'Logo & Visual Design', 'Image Manipulation & Editing', 'Layout & Typography'].map((service, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex items-center gap-3 text-offwhite-100 text-sm md:text-base"
+                  >
+                    <div className="w-2 h-2 bg-accent-100 rounded-full"></div>
+                    <span>{service}</span>
+                  </motion.div>
+                ))}
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="w-full bg-customdarkgrey-100 text-offwhite-100 py-12">
-        <div className="container mx-auto px-6 md:px-36">
-          <div className="flex flex-col items-center text-center">
+      <footer className="w-full bg-customdarkgrey-100 text-offwhite-100 py-8 md:py-12">
+        <div className="container mx-auto px-4 sm:px-6 md:px-20 lg:px-36">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center text-center"
+          >
             {/* Logo/Icon */}
-            <div className="w-16 h-16 rounded-full bg-accent-100 flex items-center justify-center text-customdarkgrey-100 font-bold text-2xl mb-6 animate-scaleIn">
+            <motion.div 
+              whileHover={{ scale: 1.1, rotate: 360 }}
+              transition={{ duration: 0.6 }}
+              className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-accent-100 flex items-center justify-center text-customdarkgrey-100 font-bold text-xl md:text-2xl mb-4 md:mb-6 cursor-pointer"
+            >
               JB
-            </div>
+            </motion.div>
             
             {/* Thank you message */}
-            <p className="text-muted-100 mb-6">
+            <p className="text-sm md:text-base text-muted-100 mb-4 md:mb-6">
               <span className="font-semibold text-offwhite-100">Thanks for scrolling,</span> that's all folks.
             </p>
 
             {/* Social Links */}
-            <div className="flex gap-6 text-muted-100">
+            <div className="flex gap-4 md:gap-6 text-muted-100">
               <SocialLink href="https://www.facebook.com/judelcabahug.bagisan" label="Facebook">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path d="M22 12.072C22 6.507 17.523 2 12 2S2 6.507 2 12.072c0 5.025 3.657 9.188 8.438 9.93v-7.03H7.898v-2.9h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.9h-2.33v7.03C18.343 21.26 22 17.096 22 12.072z"/>
@@ -480,7 +520,7 @@ export default function HomeClient({ projects, projectCounts }: HomeClientProps)
                 </svg>
               </SocialLink>
             </div>
-          </div>
+          </motion.div>
         </div>
       </footer>
     </div>
@@ -496,28 +536,116 @@ interface ServiceCardProps {
 }
 
 function ServiceCard({ title, projects, icon, category, featured = false }: ServiceCardProps) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
   return (
-    <Link
-      href={`/allprojects?category=${encodeURIComponent(category)}`}
-      className={`${
-        featured
-          ? 'bg-accent-100 text-customdarkgrey-100'
-          : 'bg-customgrey-100 text-offwhite-100'
-      } p-8 rounded-md shadow-lg flex flex-col justify-between transform hover:-translate-y-2 transition-all duration-300 animate-fadeInUp hover:shadow-2xl cursor-pointer`}
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.6 }}
     >
-      <div className="flex items-center gap-3">
-        <div
-          className={`w-8 h-8 rounded ${
-            featured ? 'bg-customdarkgrey-100 text-offwhite-100' : 'bg-customdarkgrey-100/60 text-offwhite-100'
-          } flex items-center justify-center transition-transform hover:rotate-12`}
-        >
-          {icon}
+      <Link
+        href={`/allprojects?category=${encodeURIComponent(category)}`}
+        className={`${
+          featured
+            ? 'bg-accent-100 text-customdarkgrey-100'
+            : 'bg-customgrey-100 text-offwhite-100'
+        } p-6 md:p-8 rounded-md shadow-lg flex flex-col justify-between transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl cursor-pointer block h-full`}
+      >
+        <div className="flex items-center gap-3">
+          <motion.div
+            whileHover={{ rotate: 12, scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 300 }}
+            className={`w-8 h-8 rounded ${
+              featured ? 'bg-customdarkgrey-100 text-offwhite-100' : 'bg-customdarkgrey-100/60 text-offwhite-100'
+            } flex items-center justify-center`}
+          >
+            {icon}
+          </motion.div>
+          <div className="text-base md:text-lg font-semibold">{title}</div>
         </div>
-        <div className="text-lg font-semibold">{title}</div>
+        <div className={`text-xs md:text-sm mt-6 ${featured ? 'text-customdarkgrey-100' : 'text-muted-100'}`}>
+          {projects} Projects
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+// Animated Text Component
+function AnimatedText({ text, delay = 0 }: { text: string; delay?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3, delay }}
+    >
+      {text.split('').map((char, index) => (
+        <motion.span
+          key={index}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.5,
+            delay: delay + index * 0.05,
+            ease: [0.6, 0.01, 0.05, 0.95]
+          }}
+        >
+          {char}
+        </motion.span>
+      ))}
+    </motion.div>
+  );
+}
+
+// Scroll Reveal Component
+function ScrollReveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.8, delay }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// Project Card Component
+function ProjectCard({ project, onClick, delay = 0 }: { project: Project; onClick: () => void; delay?: number }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.6, delay }}
+      onClick={onClick}
+      whileHover={{ y: -10, transition: { duration: 0.3 } }}
+      className="bg-customgrey-100 rounded-lg p-4 md:p-6 hover:bg-customgrey-100/80 transition-all group cursor-pointer"
+    >
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-2 mb-4">
+        <h3 className="text-lg sm:text-xl md:text-2xl font-bold">{project.title}</h3>
+        <span className="text-xs text-muted-100 px-3 py-1 bg-customdarkgrey-100 rounded-full whitespace-nowrap">
+          {project.tags.join(', ')}
+        </span>
       </div>
-      <div className={`text-sm mt-6 ${featured ? 'text-customdarkgrey-100' : 'text-muted-100'}`}>
-        {projects} Projects
+      <div className="rounded-lg h-48 sm:h-56 md:h-64 overflow-hidden relative">
+        <Image 
+          src={project.image_url}
+          alt={project.title}
+          fill
+          className="object-cover group-hover:scale-110 transition-transform duration-500"
+        />
       </div>
-    </Link>
+    </motion.div>
   );
 }
