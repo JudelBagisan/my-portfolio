@@ -13,6 +13,16 @@ interface Project {
   is_public: boolean;
 }
 
+interface Experience {
+  id: string;
+  role: string;
+  org: string;
+  period: string;
+  is_current: boolean;
+  side: 'left' | 'right';
+  sort_order: number;
+}
+
 async function getPublicProjects() {
   const supabase = await createClient();
   
@@ -75,5 +85,11 @@ export default async function Home() {
   const projects = await getPublicProjects();
   const projectCounts = await getProjectCounts();
 
-  return <HomeClient projects={projects} projectCounts={projectCounts} />;
+  const supabase = await createClient();
+  const { data: experiences } = await supabase
+    .from('experiences')
+    .select('*')
+    .order('sort_order', { ascending: true });
+
+  return <HomeClient projects={projects} projectCounts={projectCounts} experiences={experiences || []} />;
 }

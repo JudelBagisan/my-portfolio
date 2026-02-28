@@ -33,7 +33,7 @@ export default async function AdminDashboard() {
     .limit(5);
 
   return (
-    <div className="min-h-screen bg-gradient-to-l from-customgrey-100 to-customdarkgrey-100 text-offwhite-100">
+    <div className="min-h-screen bg-customdarkgrey-100 text-offwhite-100">
       {/* Header */}
       <header className="w-full px-6 md:px-12 py-6">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -147,6 +147,20 @@ export default async function AdminDashboard() {
                 </div>
               </div>
             </Link>
+
+            <Link href="/admin/manage-experiences" className="bg-customgrey-100 p-6 rounded-lg hover:bg-accent-100 transition-all group">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-lg bg-accent-100 group-hover:bg-customdarkgrey-100 flex items-center justify-center transition-colors">
+                  <svg className="w-6 h-6 text-offwhite-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="font-bold text-offwhite-100">Manage Experiences</h4>
+                  <p className="text-sm text-muted-100 group-hover:text-offwhite-100">Add or remove entries</p>
+                </div>
+              </div>
+            </Link>
           </div>
         </div>
 
@@ -171,7 +185,7 @@ export default async function AdminDashboard() {
                       <th className="text-left px-6 py-3 text-sm font-medium text-muted-100">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-customdarkgrey-100">
+                  <tbody className="">
                     {recentProjects.map((project) => (
                       <tr key={project.id} className="hover:bg-customdarkgrey-100/50 transition-colors">
                         <td className="px-6 py-4 text-offwhite-100 font-medium">{project.title}</td>

@@ -73,7 +73,7 @@ export default function SendEmail() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-l from-customgrey-100 to-customdarkgrey-100 text-offwhite-100">
+    <div className="min-h-screen bg-customdarkgrey-100 text-offwhite-100">
       <Toaster position="top-right" />
       
       {/* Header */}

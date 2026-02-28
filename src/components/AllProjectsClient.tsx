@@ -51,7 +51,7 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
   }, {} as Record<string, Project[]>);
 
   return (
-    <div className="bg-gradient-to-l from-customgrey-100 to-customdarkgrey-100 text-offwhite-100 font-sans min-h-screen overflow-x-hidden">
+    <div className="bg-customdarkgrey-100 text-offwhite-100 font-sans min-h-screen overflow-x-hidden">
       {/* Header */}
       <header className="w-full px-4 sm:px-6 md:px-20 lg:px-36 py-4 md:py-6 flex items-center justify-between">
         <Link href="/" className="ml-2 sm:ml-6">

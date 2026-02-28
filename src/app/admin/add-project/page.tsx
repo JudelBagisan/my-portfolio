@@ -134,7 +134,7 @@ export default function AddProject() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-l from-customgrey-100 to-customdarkgrey-100 text-offwhite-100">
+    <div className="min-h-screen bg-customdarkgrey-100 text-offwhite-100">
       <Toaster position="top-right" />
       
       {/* Header */}
@@ -164,10 +164,10 @@ export default function AddProject() {
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              className={`border-2 border-dashed rounded-lg p-8 text-center transition-all ${
+              className={`border-2 border-dashed border-gray-500 rounded-lg p-8 text-center transition-all ${
                 isDragging 
                   ? 'border-accent-100 bg-accent-100/10' 
-                  : 'border-gray-500 hover:border-accent-100'
+                  : 'border-accent-100/30 hover:border-accent-100'
               }`}
             >
               {imagePreview ? (
@@ -225,7 +225,7 @@ export default function AddProject() {
                 {...register('title')}
                 type="text"
                 id="title"
-                className="w-full px-4 py-3 bg-customdarkgrey-100 border border-gray-500 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none"
+                className="w-full px-4 py-3 bg-customdarkgrey-100 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none"
                 placeholder="e.g., Brand Identity Design"
               />
               {errors.title && <p className="mt-1 text-sm text-red-400">{errors.title.message}</p>}
@@ -240,7 +240,7 @@ export default function AddProject() {
                 <select
                   {...register('category')}
                   id="category"
-                  className="w-full px-4 py-3 bg-customdarkgrey-100 border border-gray-500 rounded-lg text-offwhite-100 focus:outline-none"
+                  className="w-full px-4 py-3 bg-customdarkgrey-100 rounded-lg text-offwhite-100 focus:outline-none"
                 >
                   <option value="">Select category</option>
                   <option value="Design">Design</option>
@@ -258,7 +258,7 @@ export default function AddProject() {
                   {...register('year')}
                   type="text"
                   id="year"
-                  className="w-full px-4 py-3 bg-customdarkgrey-100 border border-gray-500 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none"
+                  className="w-full px-4 py-3 bg-customdarkgrey-100 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none"
                   placeholder="2024"
                 />
                 {errors.year && <p className="mt-1 text-sm text-red-400">{errors.year.message}</p>}
@@ -274,7 +274,7 @@ export default function AddProject() {
                 {...register('tags')}
                 type="text"
                 id="tags"
-                className="w-full px-4 py-3 bg-customdarkgrey-100 border border-gray-500 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none"
+                className="w-full px-4 py-3 bg-customdarkgrey-100 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none"
                 placeholder="Branding, Logo, Identity"
               />
               {errors.tags && <p className="mt-1 text-sm text-red-400">{errors.tags.message}</p>}
@@ -289,7 +289,7 @@ export default function AddProject() {
                 {...register('role')}
                 type="text"
                 id="role"
-                className="w-full px-4 py-3 bg-customdarkgrey-100 border border-gray-500 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none"
+                className="w-full px-4 py-3 bg-customdarkgrey-100 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none"
                 placeholder="Lead Designer"
               />
               {errors.role && <p className="mt-1 text-sm text-red-400">{errors.role.message}</p>}
@@ -304,7 +304,7 @@ export default function AddProject() {
                 {...register('description')}
                 id="description"
                 rows={6}
-                className="w-full px-4 py-3 bg-customdarkgrey-100 border border-gray-500 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none resize-none"
+                className="w-full px-4 py-3 bg-customdarkgrey-100 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none resize-none"
                 placeholder="Describe your project in detail..."
               />
               {errors.description && <p className="mt-1 text-sm text-red-400">{errors.description.message}</p>}
@@ -316,7 +316,7 @@ export default function AddProject() {
                 {...register('is_public')}
                 type="checkbox"
                 id="is_public"
-                className="w-5 h-5 rounded border-gray-500 text-accent-100 focus:outline-none"
+                className="w-5 h-5 rounded border-accent-100/30 text-accent-100 focus:outline-none"
               />
               <label htmlFor="is_public" className="text-sm font-medium text-offwhite-100">
                 Make this project publicly visible

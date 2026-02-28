@@ -19,6 +19,16 @@ interface Project {
   is_public: boolean;
 }
 
+interface Experience {
+  id: string;
+  role: string;
+  org: string;
+  period: string;
+  is_current: boolean;
+  side: 'left' | 'right';
+  sort_order: number;
+}
+
 interface HomeClientProps {
   projects: Project[];
   projectCounts: {
@@ -27,11 +37,21 @@ interface HomeClientProps {
     shirts: number;
     totalProjects: number;
   };
+  experiences: Experience[];
 }
 
-export default function HomeClient({ projects, projectCounts }: HomeClientProps) {
+export default function HomeClient({ projects, projectCounts, experiences }: HomeClientProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyEmail = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText('judelcabahugbagisan@gmail.com');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="bg-customdarkgrey-100 text-offwhite-100 font-sans min-h-screen relative overflow-x-hidden">
@@ -63,6 +83,12 @@ export default function HomeClient({ projects, projectCounts }: HomeClientProps)
           </Link>
           <Link href="#portfolio" className="hover:text-offwhite-100 transition-all hover:scale-105">
             Portfolio
+          </Link>
+          <Link href="#experience" className="hover:text-offwhite-100 transition-all hover:scale-105">
+            Experience
+          </Link>
+          <Link href="#contact" className="hover:text-offwhite-100 transition-all hover:scale-105">
+            Contact
           </Link>
         </nav>
 
@@ -116,6 +142,16 @@ export default function HomeClient({ projects, projectCounts }: HomeClientProps)
                 Portfolio
               </Link>
             </motion.div>
+            <motion.div whileHover={{ x: 10 }} transition={{ type: "spring", stiffness: 300 }}>
+              <Link href="#experience" onClick={() => setMobileMenuOpen(false)} className="py-2 block hover:text-accent-100 transition-colors">
+                Experience
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ x: 10 }} transition={{ type: "spring", stiffness: 300 }}>
+              <Link href="#contact" onClick={() => setMobileMenuOpen(false)} className="py-2 block hover:text-accent-100 transition-colors">
+                Contact
+              </Link>
+            </motion.div>
           </div>
         </motion.nav>
       )}
@@ -130,7 +166,7 @@ export default function HomeClient({ projects, projectCounts }: HomeClientProps)
             transition={{ duration: 0.8, delay: 0.2 }}
             className="col-span-12 md:col-span-5"
           >
-            <div className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold leading-tight text-center md:text-left">
+            <div className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold leading-tight text-center md:text-left">
               <AnimatedText text="Judel" delay={0.5} />
               <AnimatedText text="Bagisan" delay={0.8} />
             </div>
@@ -204,12 +240,12 @@ export default function HomeClient({ projects, projectCounts }: HomeClientProps)
             <p className="text-sm md:text-base text-muted-100 mb-6 text-justify">
               I specialize in crafting distinct visual identities, from text-based logos to hyper-realistic image manipulations. I blend technical precision with creative flair to transform abstract concepts into compelling digital realities.
             </p>
-            <motion.div whileHover={{ x: 10 }} transition={{ type: "spring", stiffness: 300 }}>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 300 }}>
               <Link
-                href="#"
-                className="text-accent-100 hover:text-accent-200 inline-flex items-center gap-3 font-medium transition-all text-sm md:text-base"
+                href="#contact"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-accent-100 hover:bg-accent-200 text-offwhite-100 font-semibold rounded-lg transition-all text-sm md:text-base"
               >
-                My story <span>→</span>
+                Get in touch <span>→</span>
               </Link>
             </motion.div>
           </motion.div>
@@ -476,6 +512,135 @@ export default function HomeClient({ projects, projectCounts }: HomeClientProps)
               </div>
             </ScrollReveal>
           </div>
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <section className="w-full bg-customgrey-100 text-offwhite-100 py-16 md:py-24" id="experience">
+        <div className="container mx-auto px-4 sm:px-6 md:px-20 lg:px-36">
+          {/* Heading */}
+          <ScrollReveal>
+            <div className="text-center mb-4">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold">
+                Experience <span className="text-accent-200">Summary</span>
+              </h2>
+              <div className="mx-auto mt-4 mb-16 w-20 h-1 bg-accent-100 rounded-full" />
+            </div>
+          </ScrollReveal>
+
+          {/* Timeline */}
+          <div className="relative">
+            {/* Center line — desktop */}
+            <div className="hidden md:block absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-accent-100" />
+            {/* Left rail line — mobile */}
+            <div className="block md:hidden absolute left-3 top-0 bottom-0 w-0.5 bg-accent-100" />
+
+            <div className="flex flex-col gap-12">
+              {experiences.length === 0 ? (
+                <p className="text-center text-muted-100">No experience entries yet. Add some from the admin panel.</p>
+              ) : experiences.map((item, i) => (
+                <div key={i} className="relative flex items-start md:items-center">
+                  {/* Timeline dot — desktop */}
+                  <div className="hidden md:block absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-accent-100 z-10" />
+                  {/* Timeline dot — mobile */}
+                  <div className="block md:hidden absolute left-3 -translate-x-1/2 top-6 w-3 h-3 rounded-full bg-accent-100 z-10" />
+
+                  {/* Card layout */}
+                  <div className={`w-full pl-8 md:pl-0 md:w-[calc(50%-2rem)] ${item.side === 'right' ? 'md:ml-auto' : 'md:mr-auto'}`}>
+                    <ScrollReveal delay={i * 0.1}>
+                      <motion.div
+                        whileHover={{ y: -4 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
+                        className="bg-customdarkgrey-100 rounded-2xl p-6 transition-colors"
+                      >
+                        {item.is_current && (
+                          <span className="inline-block text-xs font-medium px-3 py-1 rounded-full bg-customgrey-100 text-accent-200 mb-3">
+                            Current
+                          </span>
+                        )}
+                        <h3 className="text-lg sm:text-xl font-bold text-offwhite-100 mb-1">{item.role}</h3>
+                        <p className="text-accent-200 font-medium text-sm mb-1">{item.org}</p>
+                        <p className="text-muted-100 text-xs">{item.period}</p>
+                      </motion.div>
+                    </ScrollReveal>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Let's Connect Section */}
+      <section className="w-full bg-customdarkgrey-100 text-offwhite-100 py-16 md:py-24" id="contact">
+        <div className="container mx-auto px-4 sm:px-6 md:px-20 lg:px-36">
+          <ScrollReveal>
+            {/* Heading */}
+            <div className="text-center mb-4">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold">
+                Let&apos;s <span className="text-accent-200">Connect</span>
+              </h2>
+              <div className="mx-auto mt-4 mb-10 w-20 h-1 bg-accent-100 rounded-full" />
+            </div>
+
+            {/* Description */}
+            <p className="text-center text-muted-100 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-12 leading-relaxed">
+              I&apos;m open to internships, junior developer roles, freelance/contract work, and collaborations on
+              system websites, dashboards, or layout-focused platforms. If you need something that works
+              technically and communicates clearly through design, I&apos;m ready to deliver.
+            </p>
+
+            {/* Cards */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-stretch max-w-2xl mx-auto">
+              {/* Email Card */}
+              <motion.div
+                whileHover={{ y: -6, scale: 1.02 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className="flex-1 bg-customgrey-100 rounded-2xl p-8 flex flex-col items-center gap-3 hover:border-accent-100/60 transition-colors group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-accent-100/20 flex items-center justify-center group-hover:bg-accent-100/40 transition-colors">
+                  <svg className="w-6 h-6 text-accent-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <span className="text-muted-100 text-sm uppercase tracking-widest">Email</span>
+                <span className="text-offwhite-100 font-bold text-sm sm:text-base flex items-center gap-2">
+                  judelcabahugbagisan@gmail.com
+                  <button
+                    onClick={handleCopyEmail}
+                    title={copied ? 'Copied!' : 'Copy email'}
+                    className="ml-1 p-1 rounded hover:bg-accent-100/20 transition-colors"
+                  >
+                    {copied ? (
+                      <svg className="w-4 h-4 text-accent-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    ) : (
+                      <svg className="w-4 h-4 text-muted-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                    )}
+                  </button>
+                </span>
+              </motion.div>
+
+              {/* Location Card */}
+              <motion.div
+                whileHover={{ y: -6, scale: 1.02 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className="flex-1 bg-customgrey-100 rounded-2xl p-8 flex flex-col items-center gap-3 hover:border-accent-100/60 transition-colors"
+              >
+                <div className="w-12 h-12 rounded-xl bg-accent-100/20 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-accent-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <span className="text-muted-100 text-sm uppercase tracking-widest">Location</span>
+                <span className="text-offwhite-100 font-bold text-sm sm:text-base">Davao City, Philippines</span>
+              </motion.div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 

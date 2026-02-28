@@ -41,31 +41,31 @@ export default function AdminLoginClient() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center px-4 transition-colors duration-300">
+    <div className="min-h-screen bg-customdarkgrey-100 flex items-center justify-center px-4 transition-colors duration-300">
       <Toaster position="top-right" />
       <div className="max-w-md w-full">
         {/* Logo/Header */}
         <div className="text-center mb-8 animate-fadeInUp">
-          <div className="w-16 h-16 rounded-full bg-accent-100 flex items-center justify-center text-[var(--text-primary)] font-bold text-2xl mx-auto mb-4">
+          <div className="w-16 h-16 rounded-full bg-accent-100 flex items-center justify-center text-offwhite-100 font-bold text-2xl mx-auto mb-4">
             JB
           </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-[var(--text-primary)] mb-2">Admin Portal</h1>
-          <p className="text-[var(--text-secondary)]">Sign in to manage your portfolio</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-offwhite-100 mb-2">Admin Portal</h1>
+          <p className="text-muted-100">Sign in to manage your portfolio</p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-[var(--bg-secondary)] rounded-lg p-8 shadow-2xl animate-fadeInUp animation-delay-200">
+        <div className="bg-customgrey-100 rounded-lg p-8 shadow-2xl animate-fadeInUp animation-delay-200">
           <form onSubmit={handleLogin} className="space-y-6">
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-[var(--text-primary)] mb-2">Email Address</label>
+              <label htmlFor="email" className="block text-sm font-medium text-offwhite-100 mb-2">Email Address</label>
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-gray-500 rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none transition-all"
+                className="w-full px-4 py-3 bg-customdarkgrey-100 border border-accent-100/30 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none transition-all"
                 placeholder="admin@example.com"
                 disabled={isLoading}
               />
@@ -73,14 +73,14 @@ export default function AdminLoginClient() {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-[var(--text-primary)] mb-2">Password</label>
+              <label htmlFor="password" className="block text-sm font-medium text-offwhite-100 mb-2">Password</label>
               <input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-gray-500 rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none transition-all"
+                className="w-full px-4 py-3 bg-customdarkgrey-100 border border-accent-100/30 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none transition-all"
                 placeholder="••••••••"
                 disabled={isLoading}
               />
@@ -90,7 +90,7 @@ export default function AdminLoginClient() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full px-6 py-3 bg-accent-100 text-[var(--text-secondary)] rounded-lg hover:bg-accent-200 transition-all font-medium text-lg disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95"
+              className="w-full px-6 py-3 bg-accent-100 text-offwhite-100 rounded-lg hover:bg-accent-200 transition-all font-medium text-lg disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -107,8 +107,8 @@ export default function AdminLoginClient() {
           </form>
 
           {/* Divider */}
-          <div className="mt-6 pt-6 border-t border-gray-500">
-            <p className="text-center text-sm text-[var(--text-secondary)]">Secure admin access only</p>
+          <div className="mt-6 pt-6 border-t border-accent-100/30">
+            <p className="text-center text-sm text-muted-100">Secure admin access only</p>
           </div>
         </div>
 

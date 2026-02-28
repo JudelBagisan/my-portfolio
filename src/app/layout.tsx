@@ -37,7 +37,7 @@ export default function RootLayout({
       <body
         // 2. Replace Geist variables with the Poppins variable
         // 3. Add the Tailwind class for your gradient background
-        className={`font-poppins bg-gradient-to-l from-customdarkgrey-100 to-customgrey-100 antialiased`}
+        className={`font-poppins bg-customdarkgrey-100 antialiased`}
       >
         {children}
       </body>

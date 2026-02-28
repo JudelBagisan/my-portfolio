@@ -121,7 +121,7 @@ export default function ManageProjects() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-l from-customgrey-100 to-customdarkgrey-100 flex items-center justify-center">
+      <div className="min-h-screen bg-customdarkgrey-100 flex items-center justify-center">
         <div className="text-center">
           <svg className="animate-spin h-12 w-12 text-accent-100 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -134,7 +134,7 @@ export default function ManageProjects() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-l from-customgrey-100 to-customdarkgrey-100 text-offwhite-100">
+    <div className="min-h-screen bg-customdarkgrey-100 text-offwhite-100">
       <Toaster position="top-right" />
 
       {/* Header */}
@@ -174,7 +174,7 @@ export default function ManageProjects() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search projects..."
-              className="w-full px-4 py-2 bg-customdarkgrey-100 border border-gray-500 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none"
+              className="w-full px-4 py-2 bg-customdarkgrey-100 rounded-lg text-offwhite-100 placeholder-muted-100 focus:outline-none"
             />
           </div>
 
@@ -182,7 +182,7 @@ export default function ManageProjects() {
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="px-4 py-2 bg-customdarkgrey-100 border border-gray-500 rounded-lg text-offwhite-100 focus:outline-none"
+            className="px-4 py-2 bg-customdarkgrey-100 rounded-lg text-offwhite-100 focus:outline-none"
           >
             <option value="All">All Categories</option>
             <option value="Design">Design</option>
@@ -214,7 +214,7 @@ export default function ManageProjects() {
                       <th className="text-right px-6 py-3 text-sm font-medium text-muted-100">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-customdarkgrey-100">
+                  <tbody className="">
                     {paginatedProjects.map((project) => (
                       <tr key={project.id} className="hover:bg-customdarkgrey-100/50 transition-colors">
                         <td className="px-6 py-4">
