@@ -278,10 +278,10 @@ export default function HomeClient({ projects, projectCounts, experiences }: Hom
           >
             <div className="text-xs sm:text-sm text-muted-100 uppercase tracking-widest mb-3">— Introduction</div>
             <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-4 md:mb-5 text-offwhite-100 text-justify">
-              Graphic Designer & Layout Artist, based in the Philippines.
+              Designer with a developer’s mindset.
             </h2>
             <p className="text-sm md:text-base text-muted-100 mb-6 text-justify">
-              I specialize in crafting distinct visual identities, from text-based logos to hyper-realistic image manipulations. I blend technical precision with creative flair to transform abstract concepts into compelling digital realities.
+              Graphic Designer with Web Development Experience — building visuals that don’t just look good, but function with purpose.
             </p>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 300 }}>
               <Link
@@ -663,9 +663,7 @@ export default function HomeClient({ projects, projectCounts, experiences }: Hom
 
             {/* Description */}
             <p className="text-center text-muted-100 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-12 leading-relaxed">
-              I&apos;m open to internships, junior developer roles, freelance/contract work, and collaborations on
-              system websites, dashboards, or layout-focused platforms. If you need something that works
-              technically and communicates clearly through design, I&apos;m ready to deliver.
+              Open to design, layout, and web collaboration opportunities.
             </p>
 
             {/* Cards */}
