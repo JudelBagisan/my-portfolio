@@ -210,14 +210,28 @@ export default function HomeClient({ projects, projectCounts, experiences }: Hom
       )}
 
       {/* Hero Section */}
-      <main className="w-full min-h-[60vh] md:h-[88vh] px-4 sm:px-6 md:px-20 lg:px-36 py-8 md:py-0 flex items-center">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start md:items-center">
+      <main className="w-full min-h-[60vh] md:h-[88vh] px-4 sm:px-6 md:px-20 lg:px-36 py-8 md:py-0 flex items-center relative overflow-hidden">
+        {/* Background Hero Image */}
+        <div className="absolute inset-0 flex justify-center items-end pointer-events-none">
+          <div className="relative h-full w-[85%] sm:w-[65%] md:w-[500px] md:max-w-[55%] md:-translate-x-20">
+            <Image
+              src="/images/hero-img-50.png"
+              alt="Judel Bagisan"
+              fill
+              className="object-contain object-bottom"
+              priority
+            />
+            <div className="absolute inset-0 bg-linear-to-r from-[#232633] via-transparent to-[#232633]" />
+            <div className="absolute inset-0 bg-linear-to-t from-[#232633] via-[#232633]/20 to-transparent" />
+          </div>
+        </div>
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start md:items-center relative z-10">
           {/* Left: Name & Social */}
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="col-span-12 md:col-span-5"
+            className="col-span-12 md:col-span-6"
           >
             <div className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold leading-tight text-center md:text-left">
               <AnimatedText text="Judel" delay={0.5} />
@@ -253,38 +267,14 @@ export default function HomeClient({ projects, projectCounts, experiences }: Hom
             </motion.div>
           </motion.div>
 
-          {/* Middle: Hero Image */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="col-span-12 md:col-span-3 flex justify-center relative md:-ml-8"
-          >
-            <motion.div 
-              whileHover={{ scale: 1.05, rotateY: 10 }}
-              transition={{ duration: 0.5 }}
-              className="w-40 sm:w-56 md:w-64 h-80 sm:h-96 md:h-[520px] bg-gradient-to-b from-white/5 to-black/50 rounded-[40px] shadow-2xl border-4 border-gray-800 cursor-pointer relative overflow-hidden"
-            >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-accent-100/20 to-transparent"
-                animate={{
-                  opacity: [0.2, 0.4, 0.2],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-            </motion.div>
-          </motion.div>
+
 
           {/* Right: Intro & CTA */}
           <motion.div 
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="col-span-12 md:col-span-4 pr-0 md:pr-8 text-center md:text-left"
+            className="col-span-12 md:col-span-6 pr-0 md:pr-8 text-center md:text-left"
           >
             <div className="text-xs sm:text-sm text-muted-100 uppercase tracking-widest mb-3">— Introduction</div>
             <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-4 md:mb-5 text-offwhite-100 text-justify">
