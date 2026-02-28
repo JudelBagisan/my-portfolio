@@ -145,6 +145,45 @@ export async function toggleProjectVisibility(id: string, isPublic: boolean) {
   return { success: true };
 }
 
+export async function toggleProjectFeatured(id: string, isFeatured: boolean) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect('/admin/login');
+  }
+
+  // Enforce max 3 featured projects
+  if (isFeatured) {
+    const { count } = await supabase
+      .from('projects')
+      .select('*', { count: 'exact', head: true })
+      .eq('is_featured', true);
+
+    if ((count ?? 0) >= 3) {
+      return { error: 'You can only feature up to 3 projects on the homepage. Please unfeature one first.' };
+    }
+  }
+
+  const { error } = await supabase
+    .from('projects')
+    .update({ is_featured: isFeatured })
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error toggling featured:', error);
+    return { error: error.message };
+  }
+
+  revalidatePath('/');
+  revalidatePath('/admin/manage-projects');
+
+  return { success: true };
+}
+
 export async function uploadImage(file: File) {
   const supabase = await createClient();
 

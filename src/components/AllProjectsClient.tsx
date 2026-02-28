@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import React from 'react';
@@ -26,9 +26,13 @@ interface AllProjectsClientProps {
 export default function AllProjectsClient({ projects }: AllProjectsClientProps) {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category');
+  const router = useRouter();
   
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
 
   // Set initial filter from URL parameter
   useEffect(() => {
@@ -36,6 +40,54 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
       setSelectedFilter(categoryParam);
     }
   }, [categoryParam]);
+
+  // Auto-open project from URL
+  useEffect(() => {
+    const projectId = searchParams.get('project');
+    if (projectId && projects.length > 0) {
+      const project = projects.find(p => p.id === projectId);
+      if (project) setSelectedProject(project);
+    }
+  }, [searchParams, projects]);
+
+  const openProject = (project: Project) => {
+    setSelectedProject(project);
+    const params = new URLSearchParams(window.location.search);
+    params.set('project', project.id);
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+
+  const closeProject = () => {
+    setSelectedProject(null);
+    const params = new URLSearchParams(window.location.search);
+    params.delete('project');
+    const newSearch = params.toString();
+    router.replace(newSearch ? `?${newSearch}` : window.location.pathname, { scroll: false });
+  };
+
+  const handleCopyLink = () => {
+    if (!selectedProject) return;
+    const url = `${window.location.origin}${window.location.pathname}?project=${selectedProject.id}`;
+    navigator.clipboard.writeText(url);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
+  };
+
+  const handleFullscreen = () => {
+    const el = imageContainerRef.current;
+    if (!el) return;
+    if (!document.fullscreenElement) {
+      el.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  useEffect(() => {
+    const onFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
+  }, []);
 
   // Get unique categories from projects
   const categories = ['All', ...Array.from(new Set(projects.map(p => p.category)))];
@@ -116,7 +168,7 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
                       {categoryProjects.map((project) => (
                         <div
                           key={project.id}
-                          onClick={() => setSelectedProject(project)}
+                          onClick={() => openProject(project)}
                           className="bg-customgrey-100 rounded-lg p-4 md:p-6 hover:bg-customgrey-100/80 transition-all group cursor-pointer hover:scale-105 transform duration-300"
                         >
                           <div className="flex justify-between items-start mb-3 md:mb-4 gap-2">
@@ -159,7 +211,7 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
               {filteredProjects.map((project) => (
                 <div
                   key={project.id}
-                  onClick={() => setSelectedProject(project)}
+                  onClick={() => openProject(project)}
                   className="bg-customgrey-100 rounded-lg p-4 md:p-6 hover:bg-customgrey-100/80 transition-all group cursor-pointer hover:scale-105 transform duration-300"
                 >
                   <div className="flex justify-between items-start mb-3 md:mb-4 gap-2">
@@ -200,15 +252,15 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
       {selectedProject && (
         <div
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-2 sm:p-4 animate-fadeIn overflow-y-auto"
-          onClick={() => setSelectedProject(null)}
+          onClick={closeProject}
         >
           <div
-            className="bg-customgrey-100 rounded-lg max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden animate-scaleIn my-auto flex flex-col"
+            className="relative bg-customgrey-100 rounded-lg max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden animate-scaleIn my-auto flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button
-              onClick={() => setSelectedProject(null)}
+              onClick={closeProject}
               className="absolute top-2 right-2 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 bg-customdarkgrey-100 rounded-full flex items-center justify-center text-offwhite-100 hover:bg-accent-100 transition-colors z-10"
               aria-label="Close modal"
             >
@@ -218,7 +270,7 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
             </button>
 
             {/* Large Image */}
-            <div className="relative w-full bg-customdarkgrey-100 flex items-center justify-center">
+            <div ref={imageContainerRef} className="relative w-full bg-customdarkgrey-100 flex items-center justify-center group">
               <Image
                 src={selectedProject.image_url}
                 alt={selectedProject.title}
@@ -227,6 +279,21 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
                 className="object-contain w-full h-auto"
                 style={{ maxHeight: '60vh', width: 'auto', height: 'auto' }}
               />
+              <button
+                onClick={handleFullscreen}
+                title={isFullscreen ? 'Exit fullscreen' : 'View fullscreen'}
+                className="absolute bottom-3 right-3 w-9 h-9 bg-black/60 hover:bg-black/80 rounded-lg flex items-center justify-center text-offwhite-100 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+              >
+                {isFullscreen ? (
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+                  </svg>
+                )}
+              </button>
             </div>
 
             {/* Project Details */}
@@ -278,6 +345,26 @@ export default function AllProjectsClient({ projects }: AllProjectsClientProps) 
                 </button>
                 <button className="px-4 sm:px-6 py-2 sm:py-3 bg-customdarkgrey-100 text-offwhite-100 rounded-lg hover:bg-customdarkgrey-100/80 transition-colors font-medium text-sm sm:text-base">
                   View Case Study
+                </button>
+                <button
+                  onClick={handleCopyLink}
+                  className="px-4 sm:px-6 py-2 sm:py-3 bg-customdarkgrey-100 text-offwhite-100 rounded-lg hover:bg-customdarkgrey-100/80 transition-colors font-medium text-sm sm:text-base inline-flex items-center gap-2"
+                >
+                  {copiedLink ? (
+                    <>
+                      <svg className="w-4 h-4 text-accent-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Link Copied!
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                      </svg>
+                      Copy Link
+                    </>
+                  )}
                 </button>
               </div>
             </div>

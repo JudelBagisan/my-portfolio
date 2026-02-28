@@ -42,7 +42,24 @@ export default function AdminLoginClient() {
 
   return (
     <div className="min-h-screen bg-customdarkgrey-100 flex items-center justify-center px-4 transition-colors duration-300">
-      <Toaster position="top-right" />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: '#313546',
+            color: '#FAFAF9',
+            border: '1px solid #44405B',
+            borderRadius: '8px',
+            fontSize: '14px',
+          },
+          success: {
+            iconTheme: { primary: '#906bff', secondary: '#232633' },
+          },
+          error: {
+            iconTheme: { primary: '#f87171', secondary: '#232633' },
+          },
+        }}
+      />
       <div className="max-w-md w-full">
         {/* Logo/Header */}
         <div className="text-center mb-8 animate-fadeInUp">

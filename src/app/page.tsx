@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import HomeClient from '@/components/HomeClient';
+import { Suspense } from 'react';
 
 interface Project {
   id: string;
@@ -25,8 +26,21 @@ interface Experience {
 
 async function getPublicProjects() {
   const supabase = await createClient();
-  
-  // Fetch one project from each category: Design, Shirts, Branding
+
+  // First try to fetch featured projects
+  const { data: featured } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('is_public', true)
+    .eq('is_featured', true)
+    .order('created_at', { ascending: false })
+    .limit(3);
+
+  if (featured && featured.length > 0) {
+    return featured;
+  }
+
+  // Fallback: one project per category (original behaviour)
   const categories = ['Design', 'Shirts', 'Branding'];
   const projects: Project[] = [];
 
@@ -91,5 +105,9 @@ export default async function Home() {
     .select('*')
     .order('sort_order', { ascending: true });
 
-  return <HomeClient projects={projects} projectCounts={projectCounts} experiences={experiences || []} />;
+  return (
+    <Suspense fallback={null}>
+      <HomeClient projects={projects} projectCounts={projectCounts} experiences={experiences || []} />
+    </Suspense>
+  );
 }

@@ -74,7 +74,24 @@ export default function SendEmail() {
 
   return (
     <div className="min-h-screen bg-customdarkgrey-100 text-offwhite-100">
-      <Toaster position="top-right" />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: '#313546',
+            color: '#FAFAF9',
+            border: '1px solid #44405B',
+            borderRadius: '8px',
+            fontSize: '14px',
+          },
+          success: {
+            iconTheme: { primary: '#906bff', secondary: '#232633' },
+          },
+          error: {
+            iconTheme: { primary: '#f87171', secondary: '#232633' },
+          },
+        }}
+      />
       
       {/* Header */}
       <header className="w-full px-6 md:px-12 py-6 border-b border-customgrey-100">

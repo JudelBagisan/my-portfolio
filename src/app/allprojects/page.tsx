@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import AllProjectsClient from '@/components/AllProjectsClient';
+import { Suspense } from 'react';
 
 interface Project {
   id: string;
@@ -33,5 +34,9 @@ async function getAllPublicProjects() {
 export default async function AllProjects() {
   const projects = await getAllPublicProjects();
 
-  return <AllProjectsClient projects={projects} />;
+  return (
+    <Suspense fallback={null}>
+      <AllProjectsClient projects={projects} />
+    </Suspense>
+  );
 }

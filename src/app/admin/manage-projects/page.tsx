@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client';
 
 export const dynamic = 'force-dynamic';
 import toast, { Toaster } from 'react-hot-toast';
-import { deleteProject, toggleProjectVisibility } from '../actions';
+import { deleteProject, toggleProjectVisibility, toggleProjectFeatured } from '../actions';
 import EditProjectModal from '@/components/admin/EditProjectModal';
 
 interface Project {
@@ -20,6 +20,7 @@ interface Project {
   year: string;
   role: string;
   is_public: boolean;
+  is_featured: boolean;
   created_at: string;
 }
 
@@ -114,6 +115,22 @@ export default function ManageProjects() {
     }
   };
 
+  const handleToggleFeatured = async (project: Project) => {
+    try {
+      const result = await toggleProjectFeatured(project.id, !project.is_featured);
+
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        toast.success(`Project ${!project.is_featured ? 'added to' : 'removed from'} homepage featured`);
+        fetchProjects();
+      }
+    } catch (error) {
+      toast.error('Failed to update featured status');
+      console.error(error);
+    }
+  };
+
   // Pagination
   const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -135,7 +152,24 @@ export default function ManageProjects() {
 
   return (
     <div className="min-h-screen bg-customdarkgrey-100 text-offwhite-100">
-      <Toaster position="top-right" />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: '#313546',
+            color: '#FAFAF9',
+            border: '1px solid #44405B',
+            borderRadius: '8px',
+            fontSize: '14px',
+          },
+          success: {
+            iconTheme: { primary: '#906bff', secondary: '#232633' },
+          },
+          error: {
+            iconTheme: { primary: '#f87171', secondary: '#232633' },
+          },
+        }}
+      />
 
       {/* Header */}
       <header className="w-full px-6 md:px-12 py-6">
@@ -148,7 +182,7 @@ export default function ManageProjects() {
             </Link>
             <div>
               <h1 className="text-2xl font-bold">Manage Projects</h1>
-              <p className="text-sm text-muted-100">{filteredProjects.length} project(s)</p>
+              <p className="text-sm text-muted-100">{filteredProjects.length} project(s) · {projects.filter(p => p.is_featured).length}/3 featured on homepage</p>
             </div>
           </div>
 
@@ -211,6 +245,7 @@ export default function ManageProjects() {
                       <th className="text-left px-6 py-3 text-sm font-medium text-muted-100">Category</th>
                       <th className="text-left px-6 py-3 text-sm font-medium text-muted-100">Year</th>
                       <th className="text-left px-6 py-3 text-sm font-medium text-muted-100">Status</th>
+                      <th className="text-left px-6 py-3 text-sm font-medium text-muted-100">Featured</th>
                       <th className="text-right px-6 py-3 text-sm font-medium text-muted-100">Actions</th>
                     </tr>
                   </thead>
@@ -243,6 +278,22 @@ export default function ManageProjects() {
                             }`}
                           >
                             {project.is_public ? 'Public' : 'Hidden'}
+                          </button>
+                        </td>
+                        <td className="px-6 py-4">
+                          <button
+                            onClick={() => handleToggleFeatured(project)}
+                            title={project.is_featured ? 'Remove from homepage' : 'Feature on homepage'}
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors ${
+                              project.is_featured
+                                ? 'bg-yellow-400/20 text-yellow-400 hover:bg-yellow-400/30'
+                                : 'bg-muted-100/20 text-muted-100 hover:bg-muted-100/30'
+                            }`}
+                          >
+                            <svg className="w-3 h-3" fill={project.is_featured ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                            </svg>
+                            {project.is_featured ? 'Featured' : 'Feature'}
                           </button>
                         </td>
                         <td className="px-6 py-4">
@@ -308,6 +359,19 @@ export default function ManageProjects() {
                       className="flex-1 px-4 py-2 bg-accent-100 text-offwhite-100 rounded-lg hover:bg-accent-200 transition-colors text-sm"
                     >
                       Edit
+                    </button>
+                    <button
+                      onClick={() => handleToggleFeatured(project)}
+                      className={`px-3 py-2 rounded-lg transition-colors text-sm ${
+                        project.is_featured
+                          ? 'bg-yellow-400/20 text-yellow-400 hover:bg-yellow-400/30'
+                          : 'bg-customdarkgrey-100 text-muted-100 hover:bg-customdarkgrey-100/70'
+                      }`}
+                      title={project.is_featured ? 'Remove from homepage' : 'Feature on homepage'}
+                    >
+                      <svg className="w-4 h-4" fill={project.is_featured ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                      </svg>
                     </button>
                     <button
                       onClick={() => handleDelete(project)}
