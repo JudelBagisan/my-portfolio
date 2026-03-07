@@ -486,7 +486,7 @@ export default function HomeClient({ projects, projectCounts, experiences }: Hom
                 </button>
                 <button
                   onClick={handleCopyLink}
-                  className="px-4 sm:px-6 py-2 sm:py-3 bg-customdarkgrey-100 text-offwhite-100 rounded-lg hover:bg-customdarkgrey-100/80 transition-colors font-medium text-sm sm:text-base inline-flex items-center gap-2"
+                  className="px-4 sm:px-6 py-2 sm:py-3 bg-customdarkgrey-100 text-center text-offwhite-100 rounded-lg hover:bg-customdarkgrey-100/80 transition-colors font-medium text-sm sm:text-base inline-flex items-center justify-center gap-2"
                 >
                   {copiedLink ? (
                     <>
