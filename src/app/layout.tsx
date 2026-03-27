@@ -23,7 +23,23 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Judel Bagisan - Portfolio",
-  description: "Judel Bagisan's portfolio website.",
+  description: "Graphic Designer with Web Development Experience — building visuals that don't just look good, but function with purpose.",
+  openGraph: {
+    title: "Judel Bagisan - Portfolio",
+    description: "Graphic Designer with Web Development Experience",
+    url: "https://your-website-url.com", // Feel free to update this later
+    siteName: "Judel Bagisan Portfolio",
+    images: [
+      {
+        url: "/images/og-image.png", // Ensure you save the attached image as "og-image.png" in the "public/images" folder
+        width: 1200,
+        height: 630,
+        alt: "Judel Bagisan - Portfolio Open Graph Image",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
