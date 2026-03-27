@@ -27,11 +27,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Judel Bagisan - Portfolio",
     description: "Graphic Designer with Web Development Experience",
-    url: "https://your-website-url.com", // Feel free to update this later
+    url: "judelbagisan.dev", // Feel free to update this later
     siteName: "Judel Bagisan Portfolio",
     images: [
       {
-        url: "/images/og-image.png", // Ensure you save the attached image as "og-image.png" in the "public/images" folder
+        url: "/images/portfolio-open-graph.png", // Ensure you save the attached image as "og-image.png" in the "public/images" folder
         width: 1200,
         height: 630,
         alt: "Judel Bagisan - Portfolio Open Graph Image",
