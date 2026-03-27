@@ -277,8 +277,31 @@ export default function HomeClient({ projects, projectCounts, experiences }: Hom
             className="col-span-12 md:col-span-6 pr-0 md:pr-8 text-center md:text-left"
           >
             <div className="text-xs sm:text-sm text-muted-100 uppercase tracking-widest mb-3">— Introduction</div>
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-4 md:mb-5 text-offwhite-100 text-justify">
-              Designer with a developer’s mindset.
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-4 md:mb-5 text-offwhite-100">
+              {"Designer with a developer’s mindset.".split("").map((char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ display: "none", opacity: 0 }}
+                  animate={{ display: "inline", opacity: 1 }}
+                  transition={{
+                    duration: 0.01,
+                    delay: 0.8 + (index * 0.05),
+                  }}
+                  style={{ whiteSpace: "pre-wrap" }}
+                >
+                  {char}
+                </motion.span>
+              ))}
+              <motion.span
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{
+                  duration: 0.8,
+                  repeat: Infinity,
+                }}
+                className="text-accent-100 font-bold"
+              >
+                _
+              </motion.span>
             </h2>
             <p className="text-sm md:text-base text-muted-100 mb-6 text-justify">
               Graphic Designer with Web Development Experience — building visuals that don’t just look good, but function with purpose.
@@ -302,7 +325,35 @@ export default function HomeClient({ projects, projectCounts, experiences }: Hom
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center mb-8 md:mb-12">
             <ScrollReveal>
               <div className="text-xs sm:text-sm text-muted-100 uppercase tracking-widest mb-3">— Services</div>
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-3">Any Type Of Query & Discussion.</h3>
+              <motion.h3 
+                initial="typewriterHidden" 
+                whileInView="typewriterVisible" 
+                viewport={{ once: true }} 
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6"
+              >
+                {"Any Type Of Query & Discussion.".split("").map((char, index) => (
+                  <motion.span
+                    key={index}
+                    variants={{
+                      typewriterHidden: { display: "none", opacity: 0 },
+                      typewriterVisible: { display: "inline", opacity: 1, transition: { duration: 0.01, delay: 0.2 + (index * 0.05) } }
+                    }}
+                    style={{ whiteSpace: "pre-wrap" }}
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+                <motion.span
+                  animate={{ opacity: [0, 1, 0] }}
+                  transition={{
+                    duration: 0.8,
+                    repeat: Infinity,
+                  }}
+                  className="text-accent-100 font-bold"
+                >
+                  _
+                </motion.span>
+              </motion.h3>
               <p className="text-sm md:text-base text-muted-100 mb-4">
                 Reach out for projects, collaborations, or fresh design ideas.
               </p>
@@ -360,10 +411,38 @@ export default function HomeClient({ projects, projectCounts, experiences }: Hom
             <ScrollReveal>
               <div className="flex flex-col justify-start">
                 <div className="text-xs sm:text-sm text-muted-100 uppercase tracking-widest mb-4">— Portfolio</div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
-                  All Creative Works,<br />
-                  Selected projects.
-                </h2>
+                <motion.h2 
+                  initial="typewriterHidden" 
+                  whileInView="typewriterVisible" 
+                  viewport={{ once: true }} 
+                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6"
+                >
+                  {"All Creative Works,\nSelected projects.".split("").map((char, index) => {
+                    if (char === '\n') return <br key={index} />;
+                    return (
+                      <motion.span
+                        key={index}
+                        variants={{
+                          typewriterHidden: { display: "none", opacity: 0 },
+                          typewriterVisible: { display: "inline", opacity: 1, transition: { duration: 0.01, delay: 0.2 + (index * 0.05) } }
+                        }}
+                        style={{ whiteSpace: "pre-wrap" }}
+                      >
+                        {char}
+                      </motion.span>
+                    );
+                  })}
+                  <motion.span
+                    animate={{ opacity: [0, 1, 0] }}
+                    transition={{
+                      duration: 0.8,
+                      repeat: Infinity,
+                    }}
+                    className="text-accent-100 font-bold"
+                  >
+                    _
+                  </motion.span>
+                </motion.h2>
                 <p className="text-sm md:text-base text-muted-100 mb-6 md:mb-8 max-w-md">
                   Showcasing a collection of designs and projects that highlight creativity, craftsmanship, and practical problem-solving across various mediums.
                 </p>
@@ -516,10 +595,38 @@ export default function HomeClient({ projects, projectCounts, experiences }: Hom
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
             {/* Left: Got a project */}
             <ScrollReveal>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6">
-                Got a project?<br />
-                Let's talk.
-              </h2>
+              <motion.h2 
+                initial="typewriterHidden" 
+                whileInView="typewriterVisible" 
+                viewport={{ once: true }} 
+                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6"
+              >
+                {"Got a project?\nLet's talk.".split("").map((char, index) => {
+                  if (char === '\n') return <br key={index} />;
+                  return (
+                    <motion.span
+                      key={index}
+                      variants={{
+                        typewriterHidden: { display: "none", opacity: 0 },
+                        typewriterVisible: { display: "inline", opacity: 1, transition: { duration: 0.01, delay: 0.2 + (index * 0.05) } }
+                      }}
+                      style={{ whiteSpace: "pre-wrap" }}
+                    >
+                      {char}
+                    </motion.span>
+                  );
+                })}
+                <motion.span
+                  animate={{ opacity: [0, 1, 0] }}
+                  transition={{
+                    duration: 0.8,
+                    repeat: Infinity,
+                  }}
+                  className="text-accent-100 font-bold"
+                >
+                  _
+                </motion.span>
+              </motion.h2>
               <p className="text-sm md:text-base text-muted-100 mb-4 md:mb-6">
                 Feel free to reach out for project inquiries, collaborations, or design discussions. I am open to new opportunities and always ready to connect.
               </p>
