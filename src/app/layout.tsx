@@ -24,8 +24,12 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Judel Bagisan - Portfolio",
   description: "Graphic Designer with Web Development Experience — building visuals that don't just look good, but function with purpose.",
+  verification: {
+    google: "0MI51OLk1iMcBV2EPgqSXjsUmxqekkwxAchDLxPF5uo",
+  },
   openGraph: {
     title: "Judel Bagisan - Portfolio",
+    
     description: "Graphic Designer with Web Development Experience",
     url: "judelbagisan.dev", // Feel free to update this later
     siteName: "Judel Bagisan Portfolio",
